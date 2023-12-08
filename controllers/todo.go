@@ -12,14 +12,14 @@ import (
 
 var (
 	id        int
-	item      string
+	title     string
 	completed int
 	view      = template.Must(template.ParseFiles("./views/index.html"))
 	database  = config.Database()
 )
 
 func Show(w http.ResponseWriter, r *http.Request) {
-	statement, err := database.Query(`SELECT * FROM todos`)
+	statement, err := database.Query(`SELECT * FROM tasks`)
 
 	if err != nil {
 		fmt.Println(err)
@@ -28,7 +28,7 @@ func Show(w http.ResponseWriter, r *http.Request) {
 	var todos []models.Todo
 
 	for statement.Next() {
-		err = statement.Scan(&id, &item, &completed)
+		err = statement.Scan(&id, &title, &completed)
 
 		if err != nil {
 			fmt.Println(err)
@@ -36,7 +36,7 @@ func Show(w http.ResponseWriter, r *http.Request) {
 
 		todo := models.Todo{
 			Id:        id,
-			Item:      item,
+			Title:     title,
 			Completed: completed,
 		}
 
@@ -44,7 +44,7 @@ func Show(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := models.View{
-		Todos: todos,
+		Tasks: todos,
 	}
 
 	_ = view.Execute(w, data)
@@ -52,9 +52,9 @@ func Show(w http.ResponseWriter, r *http.Request) {
 
 func Add(w http.ResponseWriter, r *http.Request) {
 
-	item := r.FormValue("item")
+	title := r.FormValue("title")
 
-	_, err := database.Exec(`INSERT INTO todos (item) VALUE (?)`, item)
+	_, err := database.Exec(`INSERT INTO tasks (title) VALUE (?)`, title)
 
 	if err != nil {
 		fmt.Println(err)
@@ -67,7 +67,7 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	_, err := database.Exec(`DELETE FROM todos WHERE id = ?`, id)
+	_, err := database.Exec(`DELETE FROM tasks WHERE id = ?`, id)
 
 	if err != nil {
 		fmt.Println(err)
@@ -80,7 +80,7 @@ func Complete(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	_, err := database.Exec(`UPDATE todos SET completed = 1 WHERE id = ?`, id)
+	_, err := database.Exec(`UPDATE tasks SET completed = 1 WHERE id = ?`, id)
 
 	if err != nil {
 		fmt.Println(err)
