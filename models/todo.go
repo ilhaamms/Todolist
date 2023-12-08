@@ -2,6 +2,6 @@ package models
 
 type Todo struct {
 	Id        int
-	Item      string
+	Title     string
 	Completed int
 }

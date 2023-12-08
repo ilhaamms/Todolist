@@ -1,5 +1,5 @@
 package models
 
 type View struct {
-	Todos []Todo
+	Tasks []Todo
 }
