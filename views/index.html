@@ -7,11 +7,49 @@
       integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt"
       crossorigin="anonymous"
     />
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+
+      .container {
+        margin-top: 20px;
+      }
+
+      .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-header {
+        background-color: #007bff;
+        color: white;
+      }
+
+      .form-group {
+        margin-bottom: 1rem;
+      }
+
+      table {
+        width: 100%;
+      }
+
+      th,
+      td {
+        text-align: center;
+      }
+
+      th {
+        background-color: #6c757d;
+        color: white;
+      }
+    </style>
     <title>Todo</title>
   </head>
 
   <body>
-    <div style="text-align: center"><h1>Todos</h1></div>
+    <div style="text-align: center">
+      <h1>Tasks</h1>
+    </div>
 
     <div class="container">
       <div class="card">
@@ -19,15 +57,15 @@
         <div class="card-body">
           <form action="/add" method="post">
             <div class="form-group">
-              <label for="Item">Item</label>
+              <label for="Title">Title</label>
               <input
                 type="text"
                 class="form-control"
-                name="item"
+                name="title"
                 placeholder="What do you want to do?"
               />
               <small class="form-text text-muted"
-                >Enter what you want to procastinate 🙂</small
+                >Enter what you want to procrastinate 🙂</small
               >
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -43,15 +81,15 @@
           <table class="table table-borderless">
             <thead>
               <tr>
-                <th scope="col">Item</th>
+                <th scope="col">Title</th>
                 <th scope="col">Status</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
-              {{range .Todos}} {{if .Completed}}
+              {{range .Tasks}} {{if .Completed}}
               <tr>
-                <td><strike>{{.Item}}</strike></td>
+                <td><strike>{{.Title}}</strike></td>
                 <td>Completed</td>
                 <td>
                   <button class="btn btn-primary" disabled>Complete</button>
@@ -60,7 +98,7 @@
               </tr>
               {{else}}
               <tr>
-                <td>{{.Item}}</td>
+                <td>{{.Title}}</td>
                 <td>Not Completed</td>
                 <td>
                   <a href="/complete/{{ .Id}}"
