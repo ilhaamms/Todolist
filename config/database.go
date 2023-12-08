@@ -4,11 +4,12 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"log"
+	"os"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/ichtrojan/thoth"
 	_ "github.com/joho/godotenv/autoload"
-	"log"
-	"os"
 )
 
 func Database() *sql.DB {
@@ -46,22 +47,22 @@ func Database() *sql.DB {
 		fmt.Println("Database Connection Successful")
 	}
 
-	_, err = database.Exec(`CREATE DATABASE gotodo`)
+	_, err = database.Exec(`CREATE DATABASE todolist`)
 
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	_, err = database.Exec(`USE gotodo`)
+	_, err = database.Exec(`USE todolist`)
 
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	_, err = database.Exec(`
-		CREATE TABLE todos (
+		CREATE TABLE tasks (
 		    id INT AUTO_INCREMENT,
-		    item TEXT NOT NULL,
+		    title TEXT NOT NULL,
 		    completed BOOLEAN DEFAULT FALSE,
 		    PRIMARY KEY (id)
 		);
